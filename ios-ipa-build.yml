@@ -1,0 +1,39 @@
+name: iOS-ipa-build
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build-ios:
+    name: "🎉 iOS Build"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build .app (no code sign)
+        run: |
+          xcodebuild -project MyTimeApp.xcodeproj \
+            -scheme MyTimeApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+        working-directory: my_time/MyTimeApp
+
+      - name: Package .app into Payload
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/MyTimeApp.app Payload/
+        working-directory: my_time/MyTimeApp
+
+      - name: Create IPA
+        run: zip -r MyTimeApp.ipa Payload
+        working-directory: my_time/MyTimeApp
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyTimeApp-ipa
+          path: my_time/MyTimeApp/MyTimeApp.ipa 
