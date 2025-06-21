@@ -20,20 +20,17 @@ jobs:
             -sdk iphoneos \
             -derivedDataPath build \
             CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-        working-directory: MyTimeApp
 
       - name: Package .app into Payload
         run: |
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/MyTimeApp.app Payload/
-        working-directory: MyTimeApp
 
       - name: Create IPA
         run: zip -r MyTimeApp.ipa Payload
-        working-directory: MyTimeApp
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: MyTimeApp-ipa
-          path: MyTimeApp/MyTimeApp.ipa 
+          path: MyTimeApp.ipa 
