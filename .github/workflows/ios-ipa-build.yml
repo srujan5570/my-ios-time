@@ -10,7 +10,7 @@ jobs:
     name: "🎉 iOS Build"
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build .app (no code sign)
         run: |
@@ -33,7 +33,7 @@ jobs:
         working-directory: my_time/MyTimeApp
 
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MyTimeApp-ipa
           path: my_time/MyTimeApp/MyTimeApp.ipa 
